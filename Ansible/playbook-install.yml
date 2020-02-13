@@ -10,15 +10,11 @@
       name: "*"
       state: latest
 
-  - name: Istall Java and Maven
-    yum:
-      name: maven
-      state: latest
-
-  - name: Istall Git
-    yum:
-      name: git
-      state: latest
+  - name: Istall software
+    yum:  name={{ item }} state=latest
+    loop:
+      - maven
+      - git
 
   - name: Check software version
     shell: java -version
@@ -39,6 +35,7 @@
   - name: Check software version
     shell: git --version
     register: git_version
+    ignore_errors: yes
 
   - name: Show software version
     debug:
