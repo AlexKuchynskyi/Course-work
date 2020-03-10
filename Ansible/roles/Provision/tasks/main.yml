@@ -1,0 +1,39 @@
+---
+# tasks file for Provision
+
+- name: Update Yum
+  yum:
+    name: "*"
+    state: latest
+
+- name: Istall software
+  yum:  name={{ item }} state=latest
+  loop:
+    - maven
+    - git
+
+- name: Check software version
+  shell: java -version
+  register: java_version
+
+- name: Show software version
+  debug:
+    var: java_version.stderr_lines[0]
+
+- name: Check software version
+  shell: mvn -version
+  register: maven_version
+
+- name: Show software version
+  debug:
+    var: maven_version.stdout_lines[0]
+
+- name: Check software version
+  shell: git --version
+  register: git_version
+  ignore_errors: yes
+
+- name: Show software version
+  debug:
+    var: git_version.stdout
+
